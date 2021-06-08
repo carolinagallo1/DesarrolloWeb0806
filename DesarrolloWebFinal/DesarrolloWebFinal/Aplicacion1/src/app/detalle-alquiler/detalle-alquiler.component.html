@@ -1,0 +1,19 @@
+<table datatable [dtOptions]="dtOptions" class="row-border hover">
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Nombre</th>
+     </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of lstDetalle">
+        <td>{{ item.cd.Id}}</td>
+        <td>{{ item.cd.titulo}}</td>
+
+        <td>
+          <button type="button" class="btn btn-dark btn-sm" (click)="detalleAlquiler(item.detalleAlquiler,item.codigoAlquiler)">Detalle</button>
+           <button *ngIf = "item.fecha_Alquiler < fechaActual" type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="sancionar(item.cliente.Id,item.Id)">Sancionar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>

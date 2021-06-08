@@ -1,0 +1,83 @@
+<div class="container" id="advanced-search-form">
+    <ng-container *ngIf="!crearCds; else formCds">
+    <button type="button" class="btn btn-dark btn-sm" (click)="mostrarCds()">Crear Cds</button>
+    <table datatable [dtOptions]="dtOptions" class="row-border hover">
+      <thead>
+        <tr>
+          <th>Condición</th>
+          <th>Título</th>
+          <th>Ubicacion</th>
+          <th>Estado</th>                    
+          <th>Estado del cd</th>
+          <th>Acciones</th>
+       </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of lstCds">
+          <td>{{ item.condicion }}</td>
+          <td>{{ item.titulo }}</td>
+          <td>{{ item.ubicacion }}</td>
+          <td>{{ item.estado }}</td>          
+          <td>{{ item.estado_Cd? 'Activo': 'Inactivo' }}</td>
+          <td>
+              <button type="button" class="btn btn-dark btn-sm" (click)="editCds(item)">Editar</button>
+              <button type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="desactivarCds(item)">Deshabilitar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</ng-container>
+<ng-template #formCds>
+    <button type="button" class="btn btn-dark btn-sm" (click)="crearCds = false">Ver cds</button>
+    <form [formGroup] = "formulario">    
+      
+      <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Título</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control"  formControlName="Titulo" [ngClass]="{ 'is-invalid': submitted && f.Titulo.errors }"  placeholder="Título">
+          <div *ngIf="submitted && f.Titulo.errors" class="invalid-feedback">
+            <div *ngIf="f.Titulo.errors.required">El Titulo es requerido</div>
+            </div>
+        </div>
+      </div>
+
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Condición</label>
+          <div class="col-sm-10">
+             <input type="text" class="form-control" formControlName="Condicion" [ngClass]="{ 'is-invalid': submitted && f.Condicion.errors }"  placeholder="Condicion">
+             <div *ngIf="submitted && f.Condicion.errors" class="invalid-feedback">
+              <div *ngIf="f.Condicion.errors.required">La direccion es requerido</div>
+              </div>
+            </div>
+        </div>        
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Ubicación</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control"  formControlName="Ubicacion" [ngClass]="{ 'is-invalid': submitted && f.Ubicacion.errors }"  placeholder="Ubicación">
+            <div *ngIf="submitted && f.Ubicacion.errors" class="invalid-feedback">
+              <div *ngIf="f.Ubicacion.errors.required">La direccion es requerido</div>
+              </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Estado</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control"  formControlName="Estado" [ngClass]="{ 'is-invalid': submitted && f.Estado.errors }"  placeholder="Estado">
+            <div *ngIf="submitted && f.Estado.errors" class="invalid-feedback">
+              <div *ngIf="f.Estado.errors.required">El estado es requerido</div>
+              </div>
+          </div>
+        </div>         
+          
+          <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+            <div class="col-sm-10">
+                <button type="button" *ngIf="!btnEditar" (click) = "AddCds()" class="btn btn-secondary" >Guardar</button>
+                <button type="button" *ngIf="btnEditar" (click) = "updateCds()" class="btn btn-secondary" >Editar</button>
+                <button type="button" class="btn btn-outline-dark" style="margin-left: 2%;" (click) = "resetFormulario()">Cancelar</button>
+            </div>
+          </div>
+      </form>
+
+  </ng-template>
+</div>

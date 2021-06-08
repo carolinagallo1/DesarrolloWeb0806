@@ -1,0 +1,85 @@
+<div class="container" id="advanced-search-form">
+ <ng-container *ngIf="!crearAlquiler; else formAlquiler">
+  <button type="button" class="btn btn-dark btn-sm" (click)="crearAlquiler = false">Crear alquiler</button>
+  <table datatable [dtOptions]="dtOptions" class="row-border hover">
+    <thead>
+      <tr>
+        <th>Cliente</th>
+        <th>Fecha de alquiler</th>
+        <th>Valor alquiler</th>        
+        <th>Acciones</th>
+     </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of lstAlquiler">
+        <td>{{ item.cliente.nombre_Cliente}}</td>
+        <td>{{ item.fecha_Alquiler}}</td>
+        <td>{{ item.valor_Alquiler}}</td>
+
+        <td>
+          <button type="button" class="btn btn-dark btn-sm" (click)="detalleAlquiler(item.detalleAlquiler,item.codigoAlquiler)">Detalle</button>
+           <button *ngIf = "item.fecha_Alquiler < fechaActual" type="button" class="btn btn-outline-danger btn-sm" style="margin-left: 1%;" (click)="sancionar(item.cliente.Id,item.Id)">Sancionar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <div *ngIf = "mostrarDetalle">
+    <button type="button" class="btn btn-dark btn-sm" (click)="mostrarDetalle = false">Detalle</button>
+  </div>
+ </ng-container>
+
+  <ng-template #formAlquiler>
+    <button type="button" class="btn btn-dark btn-sm" (click)="crearAlquiler = false">Ver alquiler</button>
+    <form [formGroup] = "formulario">
+      
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Cliente</label>
+          <div class="col-sm-10">  
+          <select class="form-control" formControlName="ClienteId" [ngClass]="{'is-invalid':submitted && f.CLienteId.errors}" placeholder="Cliente">
+            <option *ngFor="let item of lstClientes;" [value]="item.id" >{{item.nombre_Cliente}}</option>
+        </select>
+        </div>
+        </div>
+
+        <div class="form-group row">  
+          <label for="inputPassword" class="col-sm-2 col-form-label">Cds</label>
+          <div class="col-sm-10">  
+          <select class="form-control" formControlName="CdIds" multiple [ngClass]="{'is-invalid':submitted && f.CdIds.errors}" placeholder="Cds">
+           <option *ngFor="let item of lstCDs;" [value]="item.id" >{{item.titulo}}</option>
+        </select>
+        </div>
+        </div>
+                 
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Fecha alquiler</label>
+          <div class="col-sm-10">
+            <input type="date" class="form-control"  formControlName="Fecha_Alquiler" [ngClass]="{ 'is-invalid': submitted && f.Fecha_Alquiler.errors }"   placeholder="Fecha alquiler">
+            <div *ngIf="submitted && f.Fecha_Alquiler.errors" class="invalid-feedback">
+            <div *ngIf="f.Fecha_Alquiler.errors.required">La fecha de alquiler es requerido</div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label">Valor alquiler</label>
+          <div class="col-sm-10">
+            <input type="number" class="form-control"  formControlName="Valor_Alquiler" [ngClass]="{ 'is-invalid': submitted && f.valor_Alquiler.errors }"   placeholder="Valor del alquiler">
+            <div *ngIf="submitted && f.valor_Alquiler.errors" class="invalid-feedback">
+              <div *ngIf="f.valor_Alquiler.errors.required">el valor de alquiler es requerido</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-group row">
+          <label for="inputPassword" class="col-sm-2 col-form-label"></label>
+          <div class="col-sm-10">
+              <button type="button" (click)="AddAlquiler()" class="btn btn-secondary" >Guardar</button>
+             
+              <button type="button" class="btn btn-outline-dark" style="margin-left: 2%;" (click) = "resetFormulario()">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  </ng-template>
+</div>
+
+    
